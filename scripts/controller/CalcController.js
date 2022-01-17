@@ -2,6 +2,8 @@ class CalcController {
 
     constructor(){
 
+        this._audio = new Audio('click.mp3');
+        this._audioOnOff = false;
         this._lastOperator = '';
         this._lastNumber = '';
 
@@ -17,22 +19,29 @@ class CalcController {
 
     }
 
-    pasteFromClipBoard(){
-        document.addEventListener('paste' , e=>{
+    pasteFromClipboard(){
+
+        document.addEventListener('paste', e=>{
+
             let text = e.clipboardData.getData('Text');
 
             this.displayCalc = parseFloat(text);
-        })
+
+        });
+
     }
 
-    copyToClipBoard(){
+    copyToClipboard(){
+
         let input = document.createElement('input');
+
         input.value = this.displayCalc;
 
         document.body.appendChild(input);
+
         input.select();
 
-        document.execCommand("copy");
+        document.execCommand("Copy");
 
         input.remove();
 
@@ -49,13 +58,60 @@ class CalcController {
         }, 1000);
 
         this.setLastNumberToDisplay();
-        this.pasteFromClipBoard();
+        this.pasteFromClipboard();
+
+        document.querySelectorAll('.btn-ac').forEach(btn=>{
+
+            btn.addEventListener('dblclick', e=>{
+
+                this.toggleAudio();
+
+            });
+
+        });
+
+    }
+
+    toggleAudio(){
+
+         //3ºmodo
+         this._audioOnOff = !this._audioOnOff;
+
+
+         /* 2º modo 
+         if ternário
+         this._audioOnOff = (this._audioOnOff) ? false : true;
+  
+         */
+         
+         /** 
+          * 1º modo
+          * if if(this._audioOnOff){
+              this._audioOnOff = false;
+          } else {
+              this._audioOnOff = true;
+          }
+          **/
+
+    }
+
+    playAudio(){
+
+        if (this._audioOnOff) {
+
+            this._audio.currentTime = 0;
+            this._audio.play();
+
+        }
 
     }
 
     initKeyboard() {
-        document.addEventListener('keyup', e=>{
-            
+
+        document.addEventListener('keyup', e=> {
+
+            this.playAudio();
+
             switch (e.key) {
 
                 case 'Escape':
@@ -66,14 +122,13 @@ class CalcController {
                     this.clearEntry();
                     break;
     
-                case '+':
-                case '-':
-                case '*':
-                case '/':
+                case '+':    
+                case '-':    
+                case '*':    
+                case '/':    
                 case '%':
                     this.addOperation(e.key);
                     break;
-    
     
                 case 'Enter':
                 case '=':
@@ -97,14 +152,15 @@ class CalcController {
                 case '9':
                     this.addOperation(parseInt(e.key));
                     break;
-        
+
                 case 'c':
-                    if (e.ctrlKey) this.copyToClipBoard();
+                    if (e.ctrlKey) this.copyToClipboard();
                     break;
-                
-            }
     
+            }
+
         })
+
     }
 
     addEventListenerAll(element, events, fn){
@@ -122,7 +178,6 @@ class CalcController {
         this._operation = [];
         this._lastNumber = '';
         this._lastOperator = '';
-
 
         this.setLastNumberToDisplay();
 
@@ -168,6 +223,8 @@ class CalcController {
 
     getResult(){
 
+
+
         return eval(this._operation.join(""));
 
     }
@@ -181,6 +238,7 @@ class CalcController {
         if (this._operation.length < 3) {
 
             let firstItem = this._operation[0];
+
             this._operation = [firstItem, this._lastOperator, this._lastNumber];
 
         }
@@ -188,6 +246,7 @@ class CalcController {
         if (this._operation.length > 3) {
 
             last = this._operation.pop();
+
             this._lastNumber = this.getResult();
 
         } else if (this._operation.length == 3) {
@@ -296,19 +355,28 @@ class CalcController {
     }
 
     addDot(){
+
         let lastOperation = this.getLastOperation();
 
         if (typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return;
 
         if (this.isOperator(lastOperation) || !lastOperation) {
-            this.pushOperation('0.')
+
+            this.pushOperation('0.');
+
         } else {
+
             this.setLastOperation(lastOperation.toString() + '.');
+
         }
-        this.setLastNumberToDisplay(); 
+
+        this.setLastNumberToDisplay();
+        
     }
 
     execBtn(value){
+
+        this.playAudio();
 
         switch (value) {
 
