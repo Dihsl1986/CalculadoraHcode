@@ -1,5 +1,5 @@
 # Calculadora JavaScript
-Calculadora desenvolvida desenvonvilda html5,css,svg e suas funcionalidades apenas no javascript. O primeiro projeto do curso do Hcode.
+Calculadora desenvonvilda em html5,css,svg e suas funcionalidades apenas no javascript. O primeiro projeto do curso do Hcode.
 
 ### Features
  - Criar um gitclone e rodar o index.html
