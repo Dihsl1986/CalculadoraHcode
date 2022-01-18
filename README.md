@@ -4,6 +4,7 @@ Calculadora desenvolvida desenvonvilda html5,css,svg e suas funcionalidades apen
 ### Features
  - Criar um gitclone e rodar o index.html
  - Faz calculos comuns e possui funcionalide de som ao clicar e quando o teclado e pressionado.
+ - Contém data e hora em tempo real.
 
 ### 🛠 Tecnologias
  - JavaScript
